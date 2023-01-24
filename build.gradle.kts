@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.7.20"
+    id("org.jetbrains.kotlin.plugin.jpa") version "1.5.21"
     application
 }
 
@@ -14,6 +15,9 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
+    implementation("org.hibernate.orm:hibernate-core:6.1.5.Final")
+// https://mvnrepository.com/artifact/com.mysql/mysql-connector-j
+    implementation("com.mysql:mysql-connector-j:8.0.31")
 }
 
 tasks.test {
