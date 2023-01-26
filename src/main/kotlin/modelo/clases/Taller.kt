@@ -31,7 +31,6 @@ class Taller(
             password = password + (newpass[i]+3)
         }
         password = password.trim()
-        print(password)
     }
 
     fun desencriptar():String{

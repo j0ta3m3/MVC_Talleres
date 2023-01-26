@@ -88,9 +88,7 @@ class AppController(val vista: AppVista) {
 
     fun onMenuCliente(opcion: Map<Int, Cliente?>) {
         var n = 0
-        for (i in 0..opcion.keys.size - 1) {
-            n = i
-        }
+        opcion.keys.forEach{n=it}
         when (n) {
             1 -> onPedido(opcion.getValue(1))
         }

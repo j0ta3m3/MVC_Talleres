@@ -94,7 +94,7 @@ class AppVista {
     }
 
     fun pedido(cliente: Cliente?): Pedido {
-        println("Introduzca la descripción de tu pedido")
+        println("Introduzca la descripción de su pedido")
         val descripcion = readln()
         return Pedido(descripcion, cliente)
     }
