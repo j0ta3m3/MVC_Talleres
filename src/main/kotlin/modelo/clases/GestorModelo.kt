@@ -16,7 +16,7 @@ class GestorModelo {
             return instance!!
         }
     }
-    private val emf: EntityManagerFactory = Persistence.createEntityManagerFactory("PersistenciaEjercicio")
+    private val emf: EntityManagerFactory = Persistence.createEntityManagerFactory("EjercicioTaller")
     var manager: EntityManager? = null
     fun conexion() {
         try {

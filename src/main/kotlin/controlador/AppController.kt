@@ -21,8 +21,8 @@ class AppController(val vista: AppVista) {
 
             1 -> {
                 var cliente = onCliente(vista.loggin())
-                val opcion = vista.enCliente(cliente)
-                onMenuCliente(opcion)
+                //val opcion = vista.enCliente(cliente)
+                //onMenuCliente(opcion)
             }
             //0 ->
         }
@@ -53,15 +53,15 @@ class AppController(val vista: AppVista) {
         vista.salir()
     }
 
-    fun onCliente(dni: MutableList<String>): Cliente? {
+    fun onCliente(dni: MutableList<String>) {
         val gestor = GestorModelo.getInstance()
         val cliente = gestor.buscarCliente(dni)
         if (cliente != null) {
-            vista.enCliente(cliente)
+            onMenuCliente(vista.enCliente(cliente))
         } else {
             vista.error()
         }
-        return cliente
+        //return cliente
     }
 
 
