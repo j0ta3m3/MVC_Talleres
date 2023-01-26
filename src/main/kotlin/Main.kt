@@ -1,7 +1,16 @@
-fun main(args: Array<String>) {
-    println("Hello World!")
+import controlador.AppController
+import vista.AppVista
 
-    // Try adding program arguments via Run/Debug configuration.
-    // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
-    println("Program arguments: ${args.joinToString()}")
+fun main(){
+    val vista: AppVista = AppVista()
+    val controlador: AppController = AppController(vista)
+    var salir = false
+    while(!salir){
+        when(controlador.onStart()){
+            3 -> controlador.onDarDeBaja()
+            2 -> controlador.onAlta()
+            1 -> controlador.onLoggin()
+            0 -> salir = true
+        }}
+    controlador.onExit()
 }

@@ -21,5 +21,23 @@ class Taller(
     var clientes: Set<Cliente>? = null,
     @OneToMany(mappedBy = "taller", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var pedidos: Set<Pedido>?=null
-) {
+){
+    @Column(name="password")
+    var password = ""
+
+    fun encriptar(pass: String){
+        var newpass = pass.toCharArray()
+        for(i in 0..newpass.size-1){
+            newpass[i] = newpass[i]+3
+        }
+        password = newpass.toString()
+    }
+
+    fun desencriptar():String{
+        var newpass = password.toCharArray()
+        for(i in 0..newpass.size-1){
+            newpass[i] = newpass[i]-3
+        }
+        return newpass.toString()
+    }
 }

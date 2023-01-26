@@ -36,4 +36,26 @@ class GestorModelo {
         //Pero sino lo ponemos se queda creada la entidad, ¿qué sería mejor hacer?
         //emf.close()
     }
+
+    fun alta(entidad: Any){
+        manager?.transaction?.begin()
+        manager?.persist(entidad)
+        manager?.transaction?.commit()
+    }
+    fun buscarCliente(id: MutableList<String>): Cliente?{
+            val cliente = manager?.find(Cliente::class.java,id[0])
+            if(cliente?.desencriptar()==id[1]){
+                return cliente
+            }
+        else return null
+    }
+
+    fun buscarTaller(id: MutableList<String>):Taller?{
+        val taller = manager?.find(Taller::class.java,id[0])
+        if(taller?.desencriptar() == id[1] ){
+            return taller}
+        else return null
+    }
+
+
 }
