@@ -3,18 +3,19 @@ package modelo.clases
 import jakarta.persistence.*
 
 @Entity
-@Table(name="pedidos")
+@Table(name = "pedidos")
 class Pedido(
-    @Column(name="descripcion")
+    @Column(name = "descripcion")
     var descr: String,
     @ManyToOne(cascade = [CascadeType.ALL])
-    @JoinColumn(name="CIF_taller")
-    var taller: Taller?=null,
+    @JoinColumn(name = "dni_cliente")
+    var cliente: Cliente?,
     @ManyToOne(cascade = [CascadeType.ALL])
-    @JoinColumn(name="dni_cliente")
-    var cliente: Cliente,
+    @JoinColumn(name = "CIF_taller")
+    var taller: Taller? = null,
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name  = "id")
-    var id: Long? = null) {
+    @Column(name = "id")
+    var id: Long? = null
+) {
 }
