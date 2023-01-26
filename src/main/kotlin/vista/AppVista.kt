@@ -1,0 +1,4 @@
+package vista
+
+class AppVista {
+}

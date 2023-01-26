@@ -13,8 +13,7 @@
         <class>modelo.clases.Pedido</class>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
-// a continuacion tenemos que crear una base de datos para los 3
-            <property name="jakarta.persistence.jdbc.url" value=""/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost/bddtalleres"/>
             <property name="jakarta.persistence.jdbc.user" value="root"/>
             <property name="jakarta.persistence.jdbc.password" value=""/>
 
