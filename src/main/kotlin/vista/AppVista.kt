@@ -93,7 +93,7 @@ class AppVista {
         println("Error, algún dato es incorrecto.")
     }
 
-    fun pedido(cliente: Cliente?): Pedido? {
+    fun pedido(cliente: Cliente?): Pedido {
         println("Introduzca la descripción de tu pedido")
         val descripcion = readln()
         return Pedido(descripcion, cliente)

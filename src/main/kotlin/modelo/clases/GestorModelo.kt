@@ -57,7 +57,7 @@ class GestorModelo {
         else return null
     }
 
-    fun hacerPedido(pedido: Pedido?){
+    fun hacerPedido(pedido: Pedido){
         manager?.transaction?.begin()
         manager?.persist(pedido)
         manager?.transaction?.commit()
