@@ -16,7 +16,7 @@ class GestorModelo {
             return instance!!
         }
     }
-    private val emf: EntityManagerFactory = Persistence.createEntityManagerFactory("PersistenciaEjercicio")
+    private val emf: EntityManagerFactory = Persistence.createEntityManagerFactory("EjercicioTaller")
     var manager: EntityManager? = null
     fun conexion() {
         try {
@@ -57,5 +57,10 @@ class GestorModelo {
         else return null
     }
 
+    fun hacerPedido(pedido: Pedido){
+        manager?.transaction?.begin()
+        manager?.persist(pedido)
+        manager?.transaction?.commit()
+    }
 
 }

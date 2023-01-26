@@ -28,16 +28,17 @@ class Cliente(
         fun encriptar(pass: String){
             var newpass = pass.toCharArray()
             for(i in 0..newpass.size-1){
-                newpass[i] = newpass[i]+3
+                password = password + (newpass[i]+3)
             }
-            password = newpass.toString()
+            password = password.trim()
         }
 
         fun desencriptar():String{
             var newpass = password.toCharArray()
+            var passDes = ""
             for(i in 0..newpass.size-1){
-                newpass[i] = newpass[i]-3
+                passDes = passDes+(newpass[i]-3)
             }
-            return newpass.toString()
+            return passDes
         }
 }

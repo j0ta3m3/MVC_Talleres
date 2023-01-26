@@ -2,6 +2,7 @@ package vista
 
 import modelo.clases.Cliente
 import modelo.clases.Direccion
+import modelo.clases.Pedido
 import modelo.clases.Taller
 
 class AppVista {
@@ -15,7 +16,7 @@ class AppVista {
         return readln().trim().toInt()
     }
 
-    fun eleccionTipo(): Int{
+    fun eleccionTipo(): Int {
         println("1. Cliente")
         println("2. Taller")
         println("0. Atrás")
@@ -32,7 +33,7 @@ class AppVista {
         val cp = readln()
         println("Introduce la ciudad: ")
         val ciudad = readln()
-        return Direccion(calle,num,cp,ciudad)
+        return Direccion(calle, num, cp, ciudad)
     }
 
     fun salir() {
@@ -44,7 +45,7 @@ class AppVista {
         val cif = readln()
         println("Introduce el nombre: ")
         val nombre = readln()
-        val taller = Taller(cif,nombre,direccion)
+        val taller = Taller(cif, nombre, direccion)
         println("Introduce una contraseña: ")
         taller.encriptar(readln())
         return taller
@@ -59,15 +60,23 @@ class AppVista {
         val edad = readln().toInt()
         println("Introduce tu email: ")
         val email = readln()
-        val cliente = Cliente(dni,nombre,edad,email,direccion)
+        val cliente = Cliente(dni, nombre, edad, email, direccion)
         println("Introduce una contraseña: ")
         cliente.encriptar(readln())
         return cliente
     }
 
-    fun enTaller(taller: Taller?){}
+    fun enTaller(taller: Taller?) {}
 
-    fun enCliente(cliente: Cliente?){}
+    fun enCliente(cliente: Cliente?): Map<Int, Cliente?> {
+        println("*****Bienvenid@*****")
+        println("¿Qué deseas realizar?")
+        println("1. Hacer pedido")
+        println("2. Ver pedidos realizados")
+        println("3. Ver talleres relacionados")
+        val mapa: Map<Int, Cliente?> = mapOf(readln().trim().toInt() to cliente)
+        return mapa
+    }
 
     fun loggin(): MutableList<String> {
         var lista: MutableList<String> = mutableListOf()
@@ -80,8 +89,14 @@ class AppVista {
         return lista
     }
 
-    fun error(){
+    fun error() {
         println("Error, algún dato es incorrecto.")
+    }
+
+    fun pedido(cliente: Cliente?): Pedido {
+        println("Introduzca la descripción de su pedido")
+        val descripcion = readln()
+        return Pedido(descripcion, cliente)
     }
 
 }
