@@ -1,11 +1,4 @@
 import controlador.AppController
-import jakarta.persistence.EntityManager
-import jakarta.persistence.EntityManagerFactory
-import jakarta.persistence.Persistence
-import modelo.clases.Cliente
-import modelo.clases.Direccion
-import modelo.clases.Pedido
-import modelo.clases.Taller
 import vista.AppVista
 
 fun main(){

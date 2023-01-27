@@ -5,31 +5,37 @@ import vista.AppVista
 
 class AppController(val vista: AppVista) {
 
+    //Conexión
     fun onStart(): Int {
         val gestor: GestorModelo = GestorModelo.getInstance()
         gestor.conexion()
         return vista.mainMenu()
     }
 
+    //Función que se loguea según es Cliente o Taller.
     fun onLoggin() {
         val opcion = vista.eleccionTipo()
         when (opcion) {
+            //Taller
             2 -> onTaller(vista.loggin())
+            //Cliente
             1 -> onCliente(vista.loggin())
         }
     }
 
+    //Función que da de alta un Cliente o Taller, con una dirección.
     fun onAlta() {
         val direccion = vista.direccion()
         val opcion = vista.eleccionTipo()
         val gestor = GestorModelo.getInstance()
 
         when (opcion) {
+            //Taller
             2 -> {
                 val taller = vista.taller(direccion)
                 gestor.alta(taller)
             }
-
+            //Cliente
             1 -> {
                 val cliente = vista.cliente(direccion)
                 gestor.alta(cliente)
@@ -37,12 +43,14 @@ class AppController(val vista: AppVista) {
         }
     }
 
+    //Desconexión
     fun onExit() {
         val gestor: GestorModelo = GestorModelo.getInstance()
         gestor.desconexion()
         vista.salir()
     }
 
+    //Busca un cliente por dni, si no es null salta el menú de cliente.
     fun onCliente(dni: MutableList<String>) {
         val gestor = GestorModelo.getInstance()
         val cliente = gestor.buscarCliente(dni)
@@ -54,6 +62,7 @@ class AppController(val vista: AppVista) {
     }
 
 
+    //Busca un taller por cif, si no es null salta el menú de taller.
     fun onTaller(cif: MutableList<String>): Taller? {
         val gestor = GestorModelo.getInstance()
         val taller = gestor.buscarTaller(cif)
@@ -65,42 +74,55 @@ class AppController(val vista: AppVista) {
         return taller
     }
 
+    //Dar de baja a Cliente o Taller
     fun onDarDeBaja() {
         val gestor = GestorModelo.getInstance()
         val opcion = vista.eleccionTipo()
         when (opcion) {
+            //Taller
             2 -> gestor.manager?.remove(onTaller(vista.loggin()))
+            //Cliente
             1 -> gestor.manager?.remove(onCliente(vista.loggin()))
         }
     }
 
+    //Menú Cliente
     fun onMenuCliente(opcion: Map<Int, Cliente?>) {
         var n = 0
         opcion.keys.forEach{n=it}
         when (n) {
+            //Hace un pedido
             1 -> onPedido(opcion.getValue(1))
+            //Ver pedidos realizados
             2 -> onPedidosCliente(opcion.getValue(2)?.dni)
+            //Ver talleres relacionados
             3 -> onTalleresDeClientes(opcion.getValue(3)?.dni)
         }
     }
 
+    //Función que pide por teclado los datos y da de alta a un pedido.
     fun onPedido(cliente: Cliente?) {
         val gestor = GestorModelo.getInstance()
         val pedido = vista.pedido(cliente)
         gestor.hacerPedido(pedido)
     }
 
+    //Menú Taller
     fun onMenuTaller(opcion: Map<Int, Taller?>){
         var n = 0
         //(opcion.getValue(1))
         opcion.keys.forEach{n=it}
         when (n) {
+            //Consulta pedidos por asignar
             1 -> onPedidosPorAsignar(opcion.getValue(1))
+            //Consulta pedidos asignados
             2 -> onPedidosTaller(opcion.getValue(2)?.cif)
+            //Consulta clientes del taller
             3 -> onClientesDeTaller(opcion.getValue(3)?.cif)
         }
     }
 
+    //
     fun onPedidosPorAsignar(taller: Taller?){
         val gestor = GestorModelo.getInstance()
         vista.mostrarPedidos(gestor.pedidosPorAsignar())
@@ -110,12 +132,15 @@ class AppController(val vista: AppVista) {
         }
     }
 
+    //Función que consulta los pedidos con un dni y se muestran.
     fun onPedidosCliente(dni: String?):List<Pedido>{
         val gestor = GestorModelo.getInstance()
         val lista = gestor.clienteConsultaPedidos(dni)
         vista.mostrarPedidos(lista)
         return lista
     }
+
+    //Función que consulta los pedidos con un cif y se muestran.
     fun onPedidosTaller(cif: String?): List<Pedido>{
         val gestor = GestorModelo.getInstance()
         val lista = gestor.tallerConsultaPedidos(cif)
@@ -123,6 +148,7 @@ class AppController(val vista: AppVista) {
         return lista
     }
 
+    //Función
     fun onTalleresDeClientes(dni: String?){
         val gestor = GestorModelo.getInstance()
         val lista = onPedidosCliente(dni)
@@ -133,6 +159,7 @@ class AppController(val vista: AppVista) {
         vista.mostrarTalleresDeClientes(listaTalleres)
     }
 
+    //Función
     fun onClientesDeTaller(cif: String?){
         val gestor = GestorModelo.getInstance()
         val lista = onPedidosTaller(cif)

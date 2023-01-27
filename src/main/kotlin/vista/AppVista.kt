@@ -6,7 +6,7 @@ import modelo.clases.Pedido
 import modelo.clases.Taller
 
 class AppVista {
-
+    //Menú Inicial
     fun mainMenu(): Int {
         var opcion = 0
         println("Bienvenid@, elige un opción")
@@ -21,6 +21,7 @@ class AppVista {
         return opcion
     }
 
+    //Menú para elegir entre Cliente y Taller.
     fun eleccionTipo(): Int {
         var opcion = 0
         println("1. Cliente")
@@ -33,6 +34,7 @@ class AppVista {
         return opcion
     }
 
+    //Función para introducir datos sobre, una dirección.
     fun direccion(): Direccion {
         println("Tendrás que introducir primero los campos de la dirección: ")
         println("Introduce la calle: ")
@@ -53,10 +55,12 @@ class AppVista {
         return Direccion(calle, num, cp, ciudad)
     }
 
+    //Vista despedida.
     fun salir() {
         println("Adios")
     }
 
+    //Función para introducir datos sobre, un taller.
     fun taller(direccion: Direccion): Taller {
         println("Introduce el CIF: ")
         val cif = readln()
@@ -68,6 +72,7 @@ class AppVista {
         return taller
     }
 
+    //Función para introducir datos sobre, un cliente.
     fun cliente(direccion: Direccion): Cliente {
         println("Introduce tu DNI: ")
         val dni = readln()
@@ -90,6 +95,7 @@ class AppVista {
         return cliente
     }
 
+    //Menú Taller
     fun enTaller(taller: Taller?): Map<Int, Taller?> {
         var opcion = 0
         println("¿Qué deseas realizar?")
@@ -105,6 +111,7 @@ class AppVista {
         return mapa
     }
 
+    //Menú Cliente
     fun enCliente(cliente: Cliente?): Map<Int, Cliente?> {
         var opcion = 0
         println("*****Bienvenid@*****")
@@ -120,6 +127,7 @@ class AppVista {
         return mapa
     }
 
+    //Menú para logearse.
     fun loggin(): MutableList<String> {
         var lista: MutableList<String> = mutableListOf()
         println("Introduce el número identificativo: ")
@@ -131,16 +139,19 @@ class AppVista {
         return lista
     }
 
+    //Vista de error.
     fun error() {
         println("Error, algún dato es incorrecto.")
     }
 
+    //Función para introducir datos sobre, un pedido.
     fun pedido(cliente: Cliente?): Pedido {
         println("Introduzca la descripción de su pedido")
         val descripcion = readln()
         return Pedido(descripcion, cliente)
     }
 
+    //Vista que muestra los pedidos.
     fun mostrarPedidos(pedidos: List<Pedido>) {
         for(i in 0..pedidos.size-1){
             println("El id del pedido es: "+pedidos[i].id+", consta de "+ pedidos[i].descr+", pedido por el cliente"
@@ -148,6 +159,7 @@ class AppVista {
         }
     }
 
+    //
     fun asignarPedido(): Long? {
         var res = "p"
         var pedido: Long? = null
@@ -164,13 +176,14 @@ class AppVista {
         return pedido
     }
 
+    //Vista que muestra los talleres.
     fun mostrarTalleresDeClientes(lista: MutableList<Taller?>){
         for(i in 0..lista.size-1){
             println("El cif del taller: "+lista[i]?.cif+", de nombre "+ lista[i]?.nombre+", en la dirección"
                     + lista[i]?.direccion?.calle+", "+lista[i]?.direccion?.ciudad+".")
         }
     }
-
+    //Vista que muestra los clientes.
     fun mostrarClientesDeTaller(lista: MutableList<Cliente?>){
         for(i in 0..lista.size-1){
             println("El dni del cliente: "+lista[i]?.dni+", de nombre "+ lista[i]?.nombre+", email"
