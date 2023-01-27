@@ -20,7 +20,7 @@ class Taller(
     //Relación OneToMany entre Taller y Pedido.
     @OneToMany(mappedBy = "taller", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var pedidos: Set<Pedido>?=null
-){  //Contraseña
+){  //Contraseña, se guarda encriptada en la base de datos
     @Column(name="password")
     var password = ""
 

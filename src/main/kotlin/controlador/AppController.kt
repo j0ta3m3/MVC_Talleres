@@ -3,6 +3,8 @@ package controlador
 import modelo.clases.*
 import vista.AppVista
 
+
+//Clase que controla las acciones entre la vista y el gestor de base de datos
 class AppController(val vista: AppVista) {
 
     //Conexión
@@ -122,7 +124,7 @@ class AppController(val vista: AppVista) {
         }
     }
 
-    //
+    //Función que muestra los pedidos que aún no ha aceptado ningún taller
     fun onPedidosPorAsignar(taller: Taller?){
         val gestor = GestorModelo.getInstance()
         vista.mostrarPedidos(gestor.pedidosPorAsignar())
@@ -148,7 +150,7 @@ class AppController(val vista: AppVista) {
         return lista
     }
 
-    //Función
+    //Función que selecciona los talleres asociados con un dni concreto
     fun onTalleresDeClientes(dni: String?){
         val gestor = GestorModelo.getInstance()
         val lista = onPedidosCliente(dni)
@@ -159,7 +161,7 @@ class AppController(val vista: AppVista) {
         vista.mostrarTalleresDeClientes(listaTalleres)
     }
 
-    //Función
+    //Función que selecciona los clientes asociados a un cif concreto
     fun onClientesDeTaller(cif: String?){
         val gestor = GestorModelo.getInstance()
         val lista = onPedidosTaller(cif)

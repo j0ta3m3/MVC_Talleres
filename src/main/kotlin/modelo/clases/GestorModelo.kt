@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager
 import jakarta.persistence.EntityManagerFactory
 import jakarta.persistence.Persistence
 
+//Clase que gestiona las acciones en la base de datos
 class GestorModelo {
     //Crea una instancia para que sólo pueda haber una conexión
     companion object {
@@ -45,7 +46,7 @@ class GestorModelo {
         manager?.transaction?.commit()
     }
 
-    //Función que busca un cliente por un id.
+    //Función que busca un cliente por un id. Sólo lo devuelve si la contraseña introducida es correcta.
     fun buscarCliente(id: MutableList<String>): Cliente?{
             val cliente = manager?.find(Cliente::class.java,id[0])
             if(cliente?.desencriptar()==id[1]){
@@ -54,7 +55,7 @@ class GestorModelo {
         else return null
     }
 
-    //Función que busca un taller por un id.
+    //Función que busca un taller por un id. Sólo lo devuelve si la contraseña introducida es correcta.
     fun buscarTaller(id: MutableList<String>):Taller?{
         val taller = manager?.find(Taller::class.java,id[0])
         if(taller?.desencriptar() == id[1] ){
@@ -74,13 +75,13 @@ class GestorModelo {
         return lista
     }
 
-    //Función que busca un cliente por un dni.
+    //Función que busca un cliente por un dni, sólo ofrece la información.
     fun infoCliente(dni: String?):Cliente{
         val cliente = manager?.createQuery("FROM Cliente WHERE dni = $dni")?.singleResult as Cliente
         return cliente
     }
 
-    //Función que busca un taller por un cif.
+    //Función que busca un taller por un cif, sólo ofrece la información.
     fun infoTaller(cif: String?):Taller{
         val taller = manager?.createQuery("FROM Taller WHERE cif = $cif")?.singleResult as Taller
         return taller
@@ -93,13 +94,13 @@ class GestorModelo {
         manager?.transaction?.commit()
     }
 
-    //Función que
+    //Función que muestra  todos los pedidos que aún no está asignados a un taller.
     fun pedidosPorAsignar(): List<Pedido>{
         val lista = manager?.createQuery("FROM Pedido WHERE taller = null")?.resultList as List<Pedido>
         return lista
     }
 
-    //Función que
+    //Función que permite a un taller asignarse un pedido que no tuviera taller.
     fun asignarPedido(id: Long?, taller: Taller?){
         val pedido = buscarPedido(id)
         manager?.transaction?.begin()
@@ -107,7 +108,7 @@ class GestorModelo {
         manager?.transaction?.commit()
     }
 
-    //Función que busca un pedido por un id.
+    //Función privada, que sólo se puede usar en la función asignarPedido, que busca un pedido por un id.
     private fun buscarPedido(id: Long?): Pedido?{
         return manager?.find(Pedido::class.java,id)
     }

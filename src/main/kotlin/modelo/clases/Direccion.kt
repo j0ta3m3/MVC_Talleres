@@ -26,7 +26,7 @@ class Direccion(
     @OneToOne(mappedBy = "direccion", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var taller: Taller?=null,
 
-    //Id de dirección, generado automaticamente.
+    //Id de dirección, generado automáticamente.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name  = "id")

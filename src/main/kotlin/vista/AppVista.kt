@@ -34,7 +34,7 @@ class AppVista {
         return opcion
     }
 
-    //Función para introducir datos sobre, una dirección.
+    //Función para introducir datos sobre una dirección.
     fun direccion(): Direccion {
         println("Tendrás que introducir primero los campos de la dirección: ")
         println("Introduce la calle: ")
@@ -60,7 +60,7 @@ class AppVista {
         println("Adios")
     }
 
-    //Función para introducir datos sobre, un taller.
+    //Función para introducir datos sobre un taller.
     fun taller(direccion: Direccion): Taller {
         println("Introduce el CIF: ")
         val cif = readln()
@@ -72,7 +72,7 @@ class AppVista {
         return taller
     }
 
-    //Función para introducir datos sobre, un cliente.
+    //Función para introducir datos sobre un cliente.
     fun cliente(direccion: Direccion): Cliente {
         println("Introduce tu DNI: ")
         val dni = readln()
@@ -127,7 +127,7 @@ class AppVista {
         return mapa
     }
 
-    //Menú para logearse.
+    //Menú para loguearse.
     fun loggin(): MutableList<String> {
         var lista: MutableList<String> = mutableListOf()
         println("Introduce el número identificativo: ")
@@ -144,7 +144,7 @@ class AppVista {
         println("Error, algún dato es incorrecto.")
     }
 
-    //Función para introducir datos sobre, un pedido.
+    //Función para introducir datos sobre un pedido.
     fun pedido(cliente: Cliente?): Pedido {
         println("Introduzca la descripción de su pedido")
         val descripcion = readln()
@@ -159,7 +159,7 @@ class AppVista {
         }
     }
 
-    //
+    //Tras ver los pedidos que aún no ha aceptado ningún taller, da la opción al taller de elegir uno para asignárselo
     fun asignarPedido(): Long? {
         var res = "p"
         var pedido: Long? = null
@@ -176,14 +176,14 @@ class AppVista {
         return pedido
     }
 
-    //Vista que muestra los talleres.
+    //Vista que muestra los talleres asociados a un cliente determinado.
     fun mostrarTalleresDeClientes(lista: MutableList<Taller?>){
         for(i in 0..lista.size-1){
             println("El cif del taller: "+lista[i]?.cif+", de nombre "+ lista[i]?.nombre+", en la dirección"
                     + lista[i]?.direccion?.calle+", "+lista[i]?.direccion?.ciudad+".")
         }
     }
-    //Vista que muestra los clientes.
+    //Vista que muestra los clientes asociados a un taller determinado.
     fun mostrarClientesDeTaller(lista: MutableList<Cliente?>){
         for(i in 0..lista.size-1){
             println("El dni del cliente: "+lista[i]?.dni+", de nombre "+ lista[i]?.nombre+", email"
