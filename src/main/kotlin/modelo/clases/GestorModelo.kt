@@ -3,6 +3,7 @@ package modelo.clases
 import jakarta.persistence.EntityManager
 import jakarta.persistence.EntityManagerFactory
 import jakarta.persistence.Persistence
+import jakarta.persistence.Query
 
 class GestorModelo {
     //Crea una instancia para que sólo pueda haber una conexión
@@ -56,6 +57,15 @@ class GestorModelo {
             return taller}
         else return null
     }
+
+/*
+    fun tallerConsultaPedidos(cif: String): MutableList<Any?>? {
+
+        val query = manager?.createNativeQuery("SELECT * FROM pedidos WHERE cif = ?")?.setParameter(1, cif)
+
+        return query?.resultList
+    }
+*/
 
     fun hacerPedido(pedido: Pedido){
         manager?.transaction?.begin()
