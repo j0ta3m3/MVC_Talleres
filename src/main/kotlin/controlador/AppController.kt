@@ -135,10 +135,15 @@ class AppController(val vista: AppVista) {
     }
 
     //Función que consulta los pedidos con un dni y se muestran.
-    fun onPedidosCliente(dni: String?):List<Pedido>{
+    fun onPedidosCliente(dni: String?){
         val gestor = GestorModelo.getInstance()
         val lista = gestor.clienteConsultaPedidos(dni)
         vista.mostrarPedidos(lista)
+    }
+
+    fun listaPedidosCliente(dni: String?):List<Pedido>{
+        val gestor = GestorModelo.getInstance()
+        val lista = gestor.clienteConsultaPedidos(dni)
         return lista
     }
 
@@ -153,7 +158,7 @@ class AppController(val vista: AppVista) {
     //Función que selecciona los talleres asociados con un dni concreto
     fun onTalleresDeClientes(dni: String?){
         val gestor = GestorModelo.getInstance()
-        val lista = onPedidosCliente(dni)
+        val lista = listaPedidosCliente(dni)
         var listaTalleres: MutableList<Taller?> = mutableListOf()
         for(i in 0..lista.size-1){
             listaTalleres.add(gestor.infoTaller(lista[i].taller?.cif))

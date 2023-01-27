@@ -154,7 +154,7 @@ class AppVista {
     //Vista que muestra los pedidos.
     fun mostrarPedidos(pedidos: List<Pedido>) {
         for(i in 0..pedidos.size-1){
-            println("El id del pedido es: "+pedidos[i].id+", consta de "+ pedidos[i].descr+", pedido por el cliente"
+            println("El id del pedido es: "+pedidos[i].id+", consta de "+ pedidos[i].descr+", pedido por el cliente "
                     + pedidos[i].cliente?.nombre+", asignado al taller "+pedidos[i].taller?.nombre+".")
         }
     }
@@ -183,7 +183,7 @@ class AppVista {
     //Vista que muestra los talleres asociados a un cliente determinado.
     fun mostrarTalleresDeClientes(lista: MutableList<Taller?>){
         for(i in 0..lista.size-1){
-            println("El cif del taller: "+lista[i]?.cif+", de nombre "+ lista[i]?.nombre+", en la dirección"
+            println("El cif del taller: "+lista[i]?.cif+", de nombre "+ lista[i]?.nombre+", en la dirección "
                     + lista[i]?.direccion?.calle+", "+lista[i]?.direccion?.ciudad+".")
         }
     }
