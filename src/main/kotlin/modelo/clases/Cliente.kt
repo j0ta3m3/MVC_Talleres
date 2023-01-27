@@ -17,8 +17,6 @@ class Cliente(
     @OneToOne(cascade =[CascadeType.ALL])
     @JoinColumn(name="id_direccion")
     var direccion: Direccion,
-    @ManyToMany(mappedBy = "clientes", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    var talleres: Set<Taller>?=null,
     @OneToMany(mappedBy = "cliente", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var pedidos: Set<Pedido>?=null
 ){

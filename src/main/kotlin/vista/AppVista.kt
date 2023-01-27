@@ -8,19 +8,29 @@ import modelo.clases.Taller
 class AppVista {
 
     fun mainMenu(): Int {
+        var opcion = 0
         println("Bienvenid@, elige un opción")
         println("1. Loggin")
         println("2. Dar de alta")
         println("3. Dar de baja")
-        println("0. Salir")
-        return readln().trim().toInt()
+        println("0. Salir (o cualquier otra tecla)")
+        try {
+            opcion = readln().trim().toInt()
+        } catch (e: Exception) {
+        }
+        return opcion
     }
 
     fun eleccionTipo(): Int {
+        var opcion = 0
         println("1. Cliente")
         println("2. Taller")
-        println("0. Atrás")
-        return readln().trim().toInt()
+        println("Cualquier otra tecla - Atrás")
+        try {
+            opcion = readln().trim().toInt()
+        } catch (e: Exception) {
+        }
+        return opcion
     }
 
     fun direccion(): Direccion {
@@ -28,7 +38,14 @@ class AppVista {
         println("Introduce la calle: ")
         val calle = readln()
         println("Introduce el número: ")
-        val num = readln().toInt()
+        var num = -1
+        while (num < 0) {
+            try {
+                num = readln().toInt()
+            } catch (e: Exception) {
+                println("Introduce un número válido: ")
+            }
+        }
         println("Introduce el código postal: ")
         val cp = readln()
         println("Introduce la ciudad: ")
@@ -57,7 +74,14 @@ class AppVista {
         println("Introduce tu nombre: ")
         val nombre = readln()
         println("Introduce tu edad: ")
-        val edad = readln().toInt()
+        var edad = 0
+        while (edad < 1) {
+            try {
+                edad = readln().toInt()
+            } catch (e: Exception) {
+                println("Introduce una edad válida: ")
+            }
+        }
         println("Introduce tu email: ")
         val email = readln()
         val cliente = Cliente(dni, nombre, edad, email, direccion)
@@ -66,15 +90,33 @@ class AppVista {
         return cliente
     }
 
-    fun enTaller(taller: Taller?) {}
+    fun enTaller(taller: Taller?): Map<Int, Taller?> {
+        var opcion = 0
+        println("¿Qué deseas realizar?")
+        println("1. Consultar pedidos por asignar")
+        println("2. Consultar pedidos asignados")
+        println("3. Consultar clientes del taller")
+        println("Cualquier otra tecla para ir a atrás")
+        try {
+            opcion = readln().trim().toInt()
+        } catch (e: Exception) {
+        }
+        val mapa: Map<Int, Taller?> = mapOf(opcion to taller)
+        return mapa
+    }
 
     fun enCliente(cliente: Cliente?): Map<Int, Cliente?> {
+        var opcion = 0
         println("*****Bienvenid@*****")
         println("¿Qué deseas realizar?")
         println("1. Hacer pedido")
         println("2. Ver pedidos realizados")
         println("3. Ver talleres relacionados")
-        val mapa: Map<Int, Cliente?> = mapOf(readln().trim().toInt() to cliente)
+        try {
+            opcion = readln().trim().toInt()
+        } catch (e: Exception) {
+        }
+        val mapa: Map<Int, Cliente?> = mapOf(opcion to cliente)
         return mapa
     }
 
@@ -99,4 +141,40 @@ class AppVista {
         return Pedido(descripcion, cliente)
     }
 
+    fun mostrarPedidos(pedidos: List<Pedido>) {
+        for(i in 0..pedidos.size-1){
+            println("El id del pedido es: "+pedidos[i].id+", consta de "+ pedidos[i].descr+", pedido por el cliente"
+                    + pedidos[i].cliente+", asignado al taller "+pedidos[i].taller+".")
+        }
+    }
+
+    fun asignarPedido(): Long? {
+        var res = "p"
+        var pedido: Long? = null
+        while (res != "S" || res != "N") {
+            println("¿Desea aceptar alguno de los pedidos? S/N")
+            res = readln().toUpperCase()
+            if(res=="S"){
+                println("Introduce el id del pedido: ")
+                try{
+                    pedido = readln().toLong()
+                } catch(e: Exception){}
+            }
+        }
+        return pedido
+    }
+
+    fun mostrarTalleresDeClientes(lista: MutableList<Taller?>){
+        for(i in 0..lista.size-1){
+            println("El cif del taller: "+lista[i]?.cif+", de nombre "+ lista[i]?.nombre+", en la dirección"
+                    + lista[i]?.direccion?.calle+", "+lista[i]?.direccion?.ciudad+".")
+        }
+    }
+
+    fun mostrarClientesDeTaller(lista: MutableList<Cliente?>){
+        for(i in 0..lista.size-1){
+            println("El dni del cliente: "+lista[i]?.dni+", de nombre "+ lista[i]?.nombre+", email"
+                    + lista[i]?.email+", que vive en "+lista[i]?.direccion?.calle+", "+lista[i]?.direccion?.ciudad+".")
+        }
+    }
 }

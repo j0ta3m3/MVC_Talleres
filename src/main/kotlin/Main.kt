@@ -1,8 +1,4 @@
 import controlador.AppController
-import jakarta.persistence.EntityManager
-import jakarta.persistence.EntityManagerFactory
-import jakarta.persistence.Persistence
-import modelo.clases.*
 import vista.AppVista
 
 fun main(){

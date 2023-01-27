@@ -31,11 +31,8 @@ class GestorModelo {
     }
     fun desconexion() {
         manager?.close()
+        emf.close()
         println("[Desconexión de la base de datos]")
-        //Si ponemos la siguiente línea, la historia será que "destruiremos" el gestormodelo que hayamos creado,
-        //para tener una nueva conexión habría que crear un objeto nuevo
-        //Pero sino lo ponemos se queda creada la entidad, ¿qué sería mejor hacer?
-        //emf.close()
     }
 
     fun alta(entidad: Any){
@@ -58,14 +55,26 @@ class GestorModelo {
         else return null
     }
 
-/*
-    fun tallerConsultaPedidos(cif: String): MutableList<Any?>? {
 
-        val query = manager?.createNativeQuery("SELECT * FROM pedidos WHERE cif = ?")?.setParameter(1, cif)
-
-        return query?.resultList
+    fun tallerConsultaPedidos(cif: String?): List<Pedido> {
+        val lista = manager?.createQuery("FROM Pedido WHERE taller = $cif")?.resultList as List<Pedido>
+        return lista
     }
-*/
+
+    fun clienteConsultaPedidos(dni: String?): List<Pedido>{
+        val lista = manager?.createQuery("FROM Pedido WHERE cliente = $dni")?.resultList as List<Pedido>
+        return lista
+    }
+
+    fun infoCliente(dni: String?):Cliente{
+        val cliente = manager?.createQuery("FROM Cliente WHERE dni = $dni")?.singleResult as Cliente
+        return cliente
+    }
+    fun infoTaller(cif: String?):Taller{
+        val taller = manager?.createQuery("FROM Taller WHERE cif = $cif")?.singleResult as Taller
+        return taller
+    }
+
 
     fun hacerPedido(pedido: Pedido){
         manager?.transaction?.begin()
@@ -73,4 +82,19 @@ class GestorModelo {
         manager?.transaction?.commit()
     }
 
+    fun pedidosPorAsignar(): List<Pedido>{
+        val lista = manager?.createQuery("FROM Pedido WHERE taller = null")?.resultList as List<Pedido>
+        return lista
+    }
+
+    fun asignarPedido(id: Long?, taller: Taller?){
+        val pedido = buscarPedido(id)
+        manager?.transaction?.begin()
+        pedido?.taller = taller
+        manager?.transaction?.commit()
+    }
+
+    private fun buscarPedido(id: Long?): Pedido?{
+        return manager?.find(Pedido::class.java,id)
+    }
 }
