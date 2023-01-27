@@ -155,7 +155,7 @@ class AppVista {
     fun mostrarPedidos(pedidos: List<Pedido>) {
         for(i in 0..pedidos.size-1){
             println("El id del pedido es: "+pedidos[i].id+", consta de "+ pedidos[i].descr+", pedido por el cliente"
-                    + pedidos[i].cliente+", asignado al taller "+pedidos[i].taller+".")
+                    + pedidos[i].cliente?.nombre+", asignado al taller "+pedidos[i].taller?.nombre+".")
         }
     }
 
@@ -163,7 +163,8 @@ class AppVista {
     fun asignarPedido(): Long? {
         var res = "p"
         var pedido: Long? = null
-        while (res != "S" || res != "N") {
+        var salir = false
+        while (!salir) {
             println("¿Desea aceptar alguno de los pedidos? S/N")
             res = readln().toUpperCase()
             if(res=="S"){
@@ -171,6 +172,9 @@ class AppVista {
                 try{
                     pedido = readln().toLong()
                 } catch(e: Exception){}
+                salir = true
+            } else if(res=="N"){
+                salir = true
             }
         }
         return pedido
