@@ -119,6 +119,7 @@ class AppVista {
         println("1. Hacer pedido")
         println("2. Ver pedidos realizados")
         println("3. Ver talleres relacionados")
+        println("Cualquier otra tecla para salir.")
         try {
             opcion = readln().trim().toInt()
         } catch (e: Exception) {
@@ -137,6 +138,14 @@ class AppVista {
         lista.add(id)
         lista.add(pass)
         return lista
+    }
+
+    fun altaCorrecta(){
+        println("El alta se ha realizado correctamente")
+    }
+
+    fun bajaRealizada(){
+        println("La baja se ha realizado correctamente")
     }
 
     //Vista de error.

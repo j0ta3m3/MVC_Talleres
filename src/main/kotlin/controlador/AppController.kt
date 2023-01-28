@@ -35,12 +35,22 @@ class AppController(val vista: AppVista) {
             //Taller
             2 -> {
                 val taller = vista.taller(direccion)
-                gestor.alta(taller)
+                try {
+                    gestor.alta(taller)
+                    vista.altaCorrecta()
+                } catch (e: Exception) {
+                    vista.error()
+                }
             }
             //Cliente
             1 -> {
                 val cliente = vista.cliente(direccion)
-                gestor.alta(cliente)
+                try {
+                    gestor.alta(cliente)
+                    vista.altaCorrecta()
+                } catch (e: Exception) {
+                    vista.error()
+                }
             }
         }
     }
@@ -57,7 +67,15 @@ class AppController(val vista: AppVista) {
         val gestor = GestorModelo.getInstance()
         val cliente = gestor.buscarCliente(dni)
         if (cliente != null) {
-            onMenuCliente(vista.enCliente(cliente))
+            var salir = false
+            while (!salir) {
+                var opcion = vista.enCliente(cliente)
+                if (opcion.containsKey(1) || opcion.containsKey(2) || opcion.containsKey(3)) {
+                    onMenuCliente(opcion)
+                } else {
+                    salir = true
+                }
+            }
         } else {
             vista.error()
         }
@@ -69,11 +87,41 @@ class AppController(val vista: AppVista) {
         val gestor = GestorModelo.getInstance()
         val taller = gestor.buscarTaller(cif)
         if (taller != null) {
-            onMenuTaller(vista.enTaller(taller))
+            var salir = false
+            while (!salir) {
+                var opcion = vista.enTaller(taller)
+                if (opcion.containsKey(1) || opcion.containsKey(2) || opcion.containsKey(3)) {
+                    onMenuTaller(opcion)
+                } else {
+                    salir = true
+                }
+            }
         } else {
             vista.error()
         }
         return taller
+    }
+
+    fun onTallerBaja(cif: MutableList<String>): Taller? {
+        val gestor = GestorModelo.getInstance()
+        val taller = gestor.buscarTaller(cif)
+        if (taller != null) {
+            return taller
+        } else {
+            vista.error()
+            return taller
+        }
+    }
+
+    fun onClienteBaja(dni: MutableList<String>): Cliente? {
+        val gestor = GestorModelo.getInstance()
+        val cliente = gestor.buscarCliente(dni)
+        if (cliente != null) {
+            return cliente
+        } else {
+            vista.error()
+            return cliente
+        }
     }
 
     //Dar de baja a Cliente o Taller
@@ -82,16 +130,22 @@ class AppController(val vista: AppVista) {
         val opcion = vista.eleccionTipo()
         when (opcion) {
             //Taller
-            2 -> gestor.manager?.remove(onTaller(vista.loggin()))
+            2 -> {
+                gestor.manager?.remove(onTallerBaja(vista.loggin()))
+                vista.bajaRealizada()
+            }
             //Cliente
-            1 -> gestor.manager?.remove(onCliente(vista.loggin()))
+            1 -> {
+                gestor.manager?.remove(onClienteBaja(vista.loggin()))
+                vista.bajaRealizada()
+            }
         }
     }
 
     //Menú Cliente
     fun onMenuCliente(opcion: Map<Int, Cliente?>) {
         var n = 0
-        opcion.keys.forEach{n=it}
+        opcion.keys.forEach { n = it }
         when (n) {
             //Hace un pedido
             1 -> onPedido(opcion.getValue(1))
@@ -106,14 +160,19 @@ class AppController(val vista: AppVista) {
     fun onPedido(cliente: Cliente?) {
         val gestor = GestorModelo.getInstance()
         val pedido = vista.pedido(cliente)
-        gestor.hacerPedido(pedido)
+        try {
+            gestor.hacerPedido(pedido)
+            vista.altaCorrecta()
+        } catch (e: Exception) {
+            vista.error()
+        }
     }
 
     //Menú Taller
-    fun onMenuTaller(opcion: Map<Int, Taller?>){
+    fun onMenuTaller(opcion: Map<Int, Taller?>) {
         var n = 0
         //(opcion.getValue(1))
-        opcion.keys.forEach{n=it}
+        opcion.keys.forEach { n = it }
         when (n) {
             //Consulta pedidos por asignar
             1 -> onPedidosPorAsignar(opcion.getValue(1))
@@ -125,55 +184,77 @@ class AppController(val vista: AppVista) {
     }
 
     //Función que muestra los pedidos que aún no ha aceptado ningún taller
-    fun onPedidosPorAsignar(taller: Taller?){
+    fun onPedidosPorAsignar(taller: Taller?) {
         val gestor = GestorModelo.getInstance()
         vista.mostrarPedidos(gestor.pedidosPorAsignar())
         val pedido = vista.asignarPedido()
-        if(pedido!=null){
-            gestor.asignarPedido(pedido,taller)
+        if (pedido != null) {
+            gestor.asignarPedido(pedido, taller)
         }
     }
 
     //Función que consulta los pedidos con un dni y se muestran.
-    fun onPedidosCliente(dni: String?){
+    fun onPedidosCliente(dni: String?) {
         val gestor = GestorModelo.getInstance()
-        val lista = gestor.clienteConsultaPedidos(dni)
-        vista.mostrarPedidos(lista)
+        try {
+            val lista = gestor.clienteConsultaPedidos(dni)
+            vista.mostrarPedidos(lista)
+        } catch (e: Exception) {
+            vista.error()
+        }
     }
 
-    fun listaPedidosCliente(dni: String?):List<Pedido>{
+    fun listaPedidosCliente(dni: String?): List<Pedido> {
         val gestor = GestorModelo.getInstance()
-        val lista = gestor.clienteConsultaPedidos(dni)
-        return lista
+        try {
+            val lista = gestor.clienteConsultaPedidos(dni)
+            return lista
+        } catch (e: Exception) {
+            vista.error()
+            return emptyList()
+        }
     }
 
     //Función que consulta los pedidos con un cif y se muestran.
-    fun onPedidosTaller(cif: String?): List<Pedido>{
+    fun onPedidosTaller(cif: String?): List<Pedido> {
         val gestor = GestorModelo.getInstance()
-        val lista = gestor.tallerConsultaPedidos(cif)
-        vista.mostrarPedidos(lista)
-        return lista
+        try {
+            val lista = gestor.tallerConsultaPedidos(cif)
+            vista.mostrarPedidos(lista)
+            return lista
+        } catch (e: Exception) {
+            vista.error()
+            return emptyList()
+        }
     }
 
     //Función que selecciona los talleres asociados con un dni concreto
-    fun onTalleresDeClientes(dni: String?){
+    fun onTalleresDeClientes(dni: String?) {
         val gestor = GestorModelo.getInstance()
         val lista = listaPedidosCliente(dni)
         var listaTalleres: MutableList<Taller?> = mutableListOf()
-        for(i in 0..lista.size-1){
-            listaTalleres.add(gestor.infoTaller(lista[i].taller?.cif))
+        try {
+            for (i in 0..lista.size - 1) {
+                listaTalleres.add(gestor.infoTaller(lista[i].taller?.cif))
+            }
+            vista.mostrarTalleresDeClientes(listaTalleres)
+        } catch (e: Exception) {
+            vista.error()
         }
-        vista.mostrarTalleresDeClientes(listaTalleres)
     }
 
     //Función que selecciona los clientes asociados a un cif concreto
-    fun onClientesDeTaller(cif: String?){
+    fun onClientesDeTaller(cif: String?) {
         val gestor = GestorModelo.getInstance()
         val lista = onPedidosTaller(cif)
         var listaClientes: MutableList<Cliente?> = mutableListOf()
-        for(i in 0..lista.size-1){
-            listaClientes.add(gestor.infoCliente(lista[i].cliente?.dni))
+        try {
+            for (i in 0..lista.size - 1) {
+                listaClientes.add(gestor.infoCliente(lista[i].cliente?.dni))
+            }
+            vista.mostrarClientesDeTaller(listaClientes)
+        } catch (e: Exception) {
+            vista.error()
         }
-        vista.mostrarClientesDeTaller(listaClientes)
     }
 }
